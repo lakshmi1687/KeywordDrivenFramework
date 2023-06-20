@@ -22,4 +22,7 @@ public class Locators {
 		return By.linkText(locatorValue);
 		
 	}
+	public static By getClassName(String locatorValue) {
+		return By.className(locatorValue);
+	}
 }

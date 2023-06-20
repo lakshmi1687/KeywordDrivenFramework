@@ -2,32 +2,31 @@ package Tests;
 
 import utilities.ExcelUtility;
 import utilities.Locators;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
 import org.openqa.selenium.By;
-
 import constants.Constant;
-import keywords.ActionKeyword;
+import keywords.AdminPageKeywords;
+import keywords.LoginPageKeyword;
 
-public class LoginTest {
+public class Action {
 	
-	ActionKeyword actkey;
+	LoginPageKeyword logkey;
 	Method[] methods;
 	public static By locator;
 	
 	public void getkeywords() {
 		
-		actkey = new ActionKeyword();
-		 methods= actkey.getClass().getDeclaredMethods();
+		logkey = new LoginPageKeyword();
+		methods= logkey.getClass().getDeclaredMethods();
+		
 			 
 	}
 	
-	public void readKeywords() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
+	public void readKeywords(Object object) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException  {
 		for(int i=0;i<methods.length;i++) {
 			if(methods[i].getName().equalsIgnoreCase(ExcelUtility.KeywordValue)) {
-				methods[i].invoke(actkey);
+				methods[i].invoke(object);
 				break;
 			}
 			
@@ -45,27 +44,37 @@ public class LoginTest {
 	case Constant.XPATH:
 		locator=Locators.getxpath(ExcelUtility.LocatorValue);
 		break;
+	case Constant.CLASSNAME:
+		locator= Locators.getClassName(ExcelUtility.LocatorValue);
+		break;
 
 	default:
 		break;
 	}
   }
 	
-	public static void main(String[]args) throws Exception {
+	public  void execute_Test(String sheet, Object object) {
 		ExcelUtility excelutility = new ExcelUtility();
 		
-		excelutility.readExcel(Constant.EXCEL_PATH);
+		try {
+			excelutility.readExcel(Constant.EXCEL_PATH,sheet);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		LoginTest login = new LoginTest();
+		Action action = new Action();
 		
-		login.getkeywords();
+		action.getkeywords();
 		
 		for(int row=1;row<=excelutility.totalRows;row++) {
 			 
 			excelutility.getCell(row, Constant.LOCATOR_NAME, Constant.LOCATOR_VALUE, Constant.KEYWORD_COLUMN, Constant.DATA_COLUMN);
-			login.findWebElements();
-			 
-			 login.readKeywords();
+			action.findWebElements();	 
+			try {
+				action.readKeywords(object);
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				e.printStackTrace();
+			}
 			
 		}	
 	}

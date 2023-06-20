@@ -12,4 +12,6 @@ public class Constant {
 	public static final String ID ="id";
 	public static final String XPATH = "xpath";
 	public static final String NAME = "name";
+	public static final String CLASSNAME = "class";
+	
 }

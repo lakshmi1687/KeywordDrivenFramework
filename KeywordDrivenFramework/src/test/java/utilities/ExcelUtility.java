@@ -16,11 +16,11 @@ public class ExcelUtility {
 	public static String KeywordValue;
 	public static String DataValue;
 	public  int totalRows;
-	public void readExcel(String dataSheet) throws Exception {
+	public void readExcel(String dataSheet,String sheetName) throws Exception {
 		
 			 file = new FileInputStream(dataSheet);
 			 workbook = new XSSFWorkbook(file);
-			 sheet = workbook.getSheet("Sheet1");
+			 sheet = workbook.getSheet(sheetName);
 			 totalRows= sheet.getLastRowNum();
 	}
 	
